@@ -121,8 +121,8 @@ const wordList = [
   { id: "sseuda", lemma: "쓰다", stem: "쓰", pos: "verb", meaningRu: "писать", level: "A1", topic: "study", isCommon: true },
   { id: "sada", lemma: "사다", stem: "사", pos: "verb", meaningRu: "покупать", level: "A1", topic: "shopping", isCommon: true },
   { id: "salda", lemma: "살다", stem: "살", pos: "verb", meaningRu: "жить", level: "A1", topic: "life", isCommon: true },
-  { id: "joahada", lemma: "좋아하다", stem: "좋아하", pos: "verb", meaningRu: "любить / нравиться", level: "A1", topic: "feelings", isCommon: true },
-  { id: "silheohada", lemma: "싫어하다", stem: "싫어하", pos: "verb", meaningRu: "не любить", level: "A2", topic: "feelings", isCommon: true },
+  { id: "joahada", lemma: "????", stem: "???", pos: "verb", meaningRu: "?????? / ?????????", level: "A1", topic: "feelings", isCommon: true, blockedGrammarIds: ["go_sipda", "neuryeogo_hada"] },
+  { id: "silheohada", lemma: "????", stem: "???", pos: "verb", meaningRu: "?? ??????", level: "A2", topic: "feelings", isCommon: true, blockedGrammarIds: ["go_sipda", "neuryeogo_hada"] },
   { id: "undonghada", lemma: "운동하다", stem: "운동하", pos: "verb", meaningRu: "заниматься спортом", level: "A1", topic: "health", isCommon: true },
   { id: "swida", lemma: "쉬다", stem: "쉬", pos: "verb", meaningRu: "отдыхать", level: "A1", topic: "daily_life", isCommon: true },
   { id: "tada", lemma: "타다", stem: "타", pos: "verb", meaningRu: "садиться в транспорт", level: "A1", topic: "transport", isCommon: true },
@@ -2441,11 +2441,22 @@ function getGrammarCountsByDifficulty(difficulty = "easy") {
   }
 }
 
+function wordSupportsGrammarChain(word, grammarIds = []) {
+  const blockedGrammarIds = Array.isArray(word?.blockedGrammarIds) ? word.blockedGrammarIds : [];
+  if (blockedGrammarIds.length === 0) {
+    return true;
+  }
+
+  return !grammarIds.some((grammarId) => blockedGrammarIds.includes(grammarId));
+}
+
 function generateExercise(selectedGrammarIds, preferredWordId, options = {}) {
   const selectedWord = preferredWordId ? getWordById(preferredWordId) : null;
   const candidates = selectedWord ? [selectedWord] : shuffleArray(wordList);
 
   for (const word of candidates) {
+    if (!wordSupportsGrammarChain(word, selectedGrammarIds)) continue;
+
     const chainResult = conjugateChain(word, selectedGrammarIds);
     if (!chainResult.ok) continue;
 
@@ -2491,9 +2502,10 @@ function generateExerciseBatch(selectedGrammarIds, options = {}) {
   } = options;
 
   const candidateWords = shuffleArray(
-    Array.isArray(allowedWordIds) && allowedWordIds.length > 0
+    (Array.isArray(allowedWordIds) && allowedWordIds.length > 0
       ? wordList.filter((word) => allowedWordIds.includes(word.id))
       : wordList
+    ).filter((word) => wordSupportsGrammarChain(word, selectedGrammarIds))
   );
 
   const exercises = [];
@@ -2554,6 +2566,8 @@ function generateFreePractice(options = {}) {
       const candidateSet = selectedWord ? candidateWords : shuffleArray(candidateWords);
 
       for (const word of candidateSet) {
+        if (!wordSupportsGrammarChain(word, grammarIds)) continue;
+
         const exercise = generateExercise(grammarIds, word.id);
         if (!exercise.ok) continue;
 

@@ -3,12 +3,6 @@ const fs = require("fs");
 const path = require("path");
 const { randomUUID } = require("crypto");
 const {
-  getLoggingModeLabel,
-  initLoggingStore,
-  isDatabaseLoggingEnabled,
-  writeLogEntry
-} = require("./db");
-const {
   generateStudentOptions,
   generateExerciseBatch,
   generateFreePractice,
@@ -22,6 +16,16 @@ const LOG_DIR = path.join(__dirname, "outputs", "research-logs");
 const LOG_FILE = path.join(LOG_DIR, "research-log.jsonl");
 const MIN_GRAMMAR_SELECTION = 2;
 const EXERCISES_PER_SET = 5;
+const GOOGLE_SHEETS_WEBHOOK_URL = String(process.env.GOOGLE_SHEETS_WEBHOOK_URL || "").trim();
+
+const loggingStatus = {
+  backend: "file",
+  googleSheetsEnabled: Boolean(GOOGLE_SHEETS_WEBHOOK_URL),
+  lastAttemptAt: null,
+  lastSuccessAt: null,
+  lastError: null,
+  lastMode: null
+};
 
 const CONTENT_TYPES = {
   ".html": "text/html; charset=utf-8",
@@ -35,6 +39,10 @@ const CONTENT_TYPES = {
   ".ico": "image/x-icon"
 };
 
+function isGoogleSheetsLoggingEnabled() {
+  return Boolean(GOOGLE_SHEETS_WEBHOOK_URL);
+}
+
 function ensureFileLogStorage() {
   fs.mkdirSync(LOG_DIR, { recursive: true });
   if (!fs.existsSync(LOG_FILE)) {
@@ -47,25 +55,68 @@ function appendLogToFile(entry) {
   fs.appendFileSync(LOG_FILE, `${JSON.stringify(entry)}\n`, "utf8");
 }
 
+async function appendLogToGoogleSheets(entry) {
+  const response = await fetch(GOOGLE_SHEETS_WEBHOOK_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json; charset=utf-8"
+    },
+    body: JSON.stringify(entry)
+  });
+
+  if (!response.ok) {
+    const text = await response.text().catch(() => "");
+    throw new Error(`Google Sheets webhook returned ${response.status}${text ? `: ${text}` : ""}`);
+  }
+
+  return { ok: true, mode: "google-sheets" };
+}
+
 async function appendLog(entry) {
   const normalizedEntry = {
     ...entry,
     loggedAt: entry.loggedAt || new Date().toISOString()
   };
 
-  if (!isDatabaseLoggingEnabled()) {
-    appendLogToFile(normalizedEntry);
-    return { ok: true, mode: "file" };
+  loggingStatus.lastAttemptAt = normalizedEntry.loggedAt;
+
+  if (isGoogleSheetsLoggingEnabled()) {
+    try {
+      const result = await appendLogToGoogleSheets(normalizedEntry);
+      loggingStatus.backend = "google-sheets";
+      loggingStatus.lastSuccessAt = normalizedEntry.loggedAt;
+      loggingStatus.lastError = null;
+      loggingStatus.lastMode = "google-sheets";
+      return result;
+    } catch (error) {
+      loggingStatus.lastError = error.message || String(error);
+      console.error("Failed to write log entry to Google Sheets, falling back to file:", error);
+    }
   }
 
-  try {
-    return await writeLogEntry(normalizedEntry);
-  } catch (error) {
-    console.error("Failed to write log entry to Postgres, falling back to file:", error);
-    appendLogToFile(normalizedEntry);
-    return { ok: true, mode: "file-fallback" };
-  }
+  appendLogToFile(normalizedEntry);
+  loggingStatus.backend = "file";
+  loggingStatus.lastSuccessAt = normalizedEntry.loggedAt;
+  loggingStatus.lastMode = "file";
+  return { ok: true, mode: "file" };
 }
+
+function getLoggingStatusPayload() {
+  return {
+    ok: true,
+    backend: loggingStatus.backend,
+    googleSheetsEnabled: loggingStatus.googleSheetsEnabled,
+    lastAttemptAt: loggingStatus.lastAttemptAt,
+    lastSuccessAt: loggingStatus.lastSuccessAt,
+    lastError: loggingStatus.lastError,
+    lastMode: loggingStatus.lastMode,
+    webhookUrlPreview: GOOGLE_SHEETS_WEBHOOK_URL
+      ? `${GOOGLE_SHEETS_WEBHOOK_URL.slice(0, 60)}...`
+      : null
+  };
+}
+
+
 
 function sendJson(response, statusCode, payload) {
   response.writeHead(statusCode, {
@@ -371,6 +422,16 @@ const server = http.createServer(async (request, response) => {
       return;
     }
 
+    if (pathname === "/api/research/logging-status") {
+      if (request.method !== "GET") {
+        sendMethodNotAllowed(response);
+        return;
+      }
+
+      sendJson(response, 200, getLoggingStatusPayload());
+      return;
+    }
+
     if (pathname === "/api/exercise/self") {
       if (request.method !== "POST") {
         sendMethodNotAllowed(response);
@@ -412,14 +473,8 @@ const server = http.createServer(async (request, response) => {
 
 async function startServer() {
   ensureFileLogStorage();
-
-  try {
-    const initResult = await initLoggingStore();
-    console.log(`Research logging backend: ${initResult.mode}`);
-  } catch (error) {
-    console.error("Failed to initialize Postgres logging, file fallback will be used:", error);
-    console.log(`Research logging backend: ${getLoggingModeLabel()} with file fallback`);
-  }
+  loggingStatus.backend = isGoogleSheetsLoggingEnabled() ? "google-sheets" : "file";
+  console.log(`Research logging backend: ${isGoogleSheetsLoggingEnabled() ? "google-sheets" : "file"}`);
 
   server.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
