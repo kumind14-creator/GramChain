@@ -122,39 +122,39 @@ const wordList = [
   { id: "sada", lemma: "사다", stem: "사", pos: "verb", meaningRu: "покупать", level: "A1", topic: "shopping", isCommon: true },
   { id: "salda", lemma: "살다", stem: "살", pos: "verb", meaningRu: "жить", level: "A1", topic: "life", isCommon: true },
   { id: "joahada", lemma: "좋아하다", stem: "좋아하", pos: "verb", meaningRu: "любить / нравиться", level: "A1", topic: "feelings", isCommon: true, blockedGrammarIds: ["go_sipda", "neuryeogo_hada"] },
-  { id: "silheohada", lemma: "싫어하다", stem: "싫어하", pos: "verb", meaningRu: "не любить / не нравиться", level: "A2", topic: "feelings", isCommon: true, blockedGrammarIds: ["go_sipda", "neuryeogo_hada"] },
+  { id: "silheohada", lemma: "싫어하다", stem: "싫어하", pos: "verb", meaningRu: "не любить / не нравиться", level: "A2", topic: "feelings", isCommon: true, excludedChainParts: [["geot_gatda_verb_present", "ji_anta", "eul_ttae"], ["ji_anta", "geot_gatda_verb_present", "eul_ttae"]], blockedGrammarIds: ["go_sipda", "neuryeogo_hada"] },
   { id: "undonghada", lemma: "운동하다", stem: "운동하", pos: "verb", meaningRu: "заниматься спортом", level: "A1", topic: "health", isCommon: true },
   { id: "swida", lemma: "쉬다", stem: "쉬", pos: "verb", meaningRu: "отдыхать", level: "A1", topic: "daily_life", isCommon: true },
   { id: "tada", lemma: "타다", stem: "타", pos: "verb", meaningRu: "садиться в транспорт", level: "A1", topic: "transport", isCommon: true,
     excludedExerciseChains: [["neuryeogo_hada", "ji_anta", "myeon_eumyeon"]] },
-  { id: "yeolda", lemma: "열다", stem: "열", pos: "verb", meaningRu: "открывать", level: "A1", topic: "home", isCommon: true },
-  { id: "datda", lemma: "닫다", stem: "닫", pos: "verb", meaningRu: "закрывать", level: "A1", topic: "home", isCommon: true, blockedGrammarIds: ["go_sipda", "neuryeogo_hada"] },
-  { id: "gidarida", lemma: "기다리다", stem: "기다리", pos: "verb", meaningRu: "ждать", level: "A1", topic: "daily_life", isCommon: true },
+  { id: "yeolda", lemma: "열다", stem: "열", pos: "verb", meaningRu: "открывать", level: "A1", topic: "home", isCommon: true, excludedChainParts: [["go_sipda", "ajida_eojida", "geot_gatda_verb_present"], ["go_sipda", "ajida_eojida", "ji_anta"], ["go_sipda", "ajida_eojida", "past_tense", "myeon_eumyeon"], ["geot_gatda_verb_present", "ji_anta", "eul_ttae"], ["ji_anta", "geot_gatda_verb_present", "eul_ttae"], ["ji_anta", "neuryeogo_hada", "geot_gatda_verb_present", "eul_ttae"], ["neuryeogo_hada", "ji_anta", "geot_gatda_verb_present", "eul_ttae"], ["go_sipda", "geot_gatda_adj", "ji_anta", "eul_ttae"], ["go_sipda", "ji_anta", "geot_gatda_adj", "eul_ttae"], ["ji_anta", "geot_gatda_verb_present", "past_tense", "eul_ttae"], ["ji_anta", "neuryeogo_hada", "past_tense", "eul_ttae"], ["ji_anta", "neuryeogo_hada", "past_tense", "myeon_eumyeon"], ["go_sipda", "ji_anta", "past_tense", "eul_ttae"]] },
+  { id: "datda", lemma: "닫다", stem: "닫", pos: "verb", meaningRu: "закрывать", level: "A1", topic: "home", isCommon: true, excludedChainParts: [["go_sipda", "ajida_eojida", "geot_gatda_verb_present"], ["go_sipda", "ajida_eojida", "ji_anta"], ["go_sipda", "ajida_eojida", "past_tense", "myeon_eumyeon"], ["geot_gatda_verb_present", "ji_anta", "eul_ttae"], ["go_sipda", "ji_anta", "geot_gatda_adj", "eul_ttae"], ["go_sipda", "geot_gatda_adj", "ji_anta", "eul_ttae"], ["ji_anta", "neuryeogo_hada", "geot_gatda_verb_present", "eul_ttae"], ["neuryeogo_hada", "ji_anta", "geot_gatda_verb_present", "eul_ttae"], ["ji_anta", "geot_gatda_verb_present", "past_tense", "eul_ttae"], ["go_sipda", "ji_anta", "past_tense", "eul_ttae"], ["ji_anta", "neuryeogo_hada", "past_tense", "eul_ttae"], ["ji_anta", "neuryeogo_hada", "past_tense", "myeon_eumyeon"]] },
+  { id: "gidarida", lemma: "기다리다", stem: "기다리", pos: "verb", meaningRu: "ждать", level: "A1", topic: "daily_life", isCommon: true, excludedChainParts: [["go_sipda", "ajida_eojida", "ji_anta"], ["go_sipda", "ajida_eojida", "geot_gatda_verb_present"], ["go_sipda", "ajida_eojida", "past_tense", "myeon_eumyeon"]] },
   { id: "nolda", lemma: "놀다", stem: "놀", pos: "verb", meaningRu: "играть / проводить время", level: "A1", topic: "daily_life", isCommon: true },
   { id: "mandeulda", lemma: "만들다", stem: "만들", pos: "verb", meaningRu: "делать / создавать", level: "A1", topic: "basic", isCommon: true },
-  { id: "keuda", lemma: "크다", stem: "크", pos: "adjective", meaningRu: "большой", level: "A1", topic: "description", isCommon: true },
-  { id: "jakda", lemma: "작다", stem: "작", pos: "adjective", meaningRu: "маленький", level: "A1", topic: "description", isCommon: true },
-  { id: "nopda", lemma: "높다", stem: "높", pos: "adjective", meaningRu: "высокий", level: "A1", topic: "description", isCommon: true },
-  { id: "natda", lemma: "낮다", stem: "낮", pos: "adjective", meaningRu: "низкий", level: "A1", topic: "description", isCommon: true },
-  { id: "johta", lemma: "좋다", stem: "좋", pos: "adjective", meaningRu: "хороший", level: "A1", topic: "basic", isCommon: true },
-  { id: "nappeuda", lemma: "나쁘다", stem: "나쁘", pos: "adjective", meaningRu: "плохой", level: "A1", topic: "basic", isCommon: true },
-  { id: "jaemiitda", lemma: "재미있다", stem: "재미있", pos: "adjective", meaningRu: "интересный", level: "A1", topic: "feelings", isCommon: true },
-  { id: "jaemieopda", lemma: "재미없다", stem: "재미없", pos: "adjective", meaningRu: "скучный", level: "A1", topic: "feelings", isCommon: true },
+  { id: "keuda", lemma: "크다", stem: "크", pos: "adjective", meaningRu: "большой", level: "A1", topic: "description", isCommon: true, excludedChainParts: [["ajida_eojida", "go_sipda"], ["ajida_eojida", "neuryeogo_hada"]] },
+  { id: "jakda", lemma: "작다", stem: "작", pos: "adjective", meaningRu: "маленький", level: "A1", topic: "description", isCommon: true, excludedChainParts: [["ajida_eojida", "go_sipda"], ["ajida_eojida", "neuryeogo_hada"]] },
+  { id: "nopda", lemma: "높다", stem: "높", pos: "adjective", meaningRu: "высокий", level: "A1", topic: "description", isCommon: true, excludedChainParts: [["ajida_eojida", "go_sipda"], ["ajida_eojida", "neuryeogo_hada"]] },
+  { id: "natda", lemma: "낮다", stem: "낮", pos: "adjective", meaningRu: "низкий", level: "A1", topic: "description", isCommon: true, excludedChainParts: [["ajida_eojida", "go_sipda"], ["ajida_eojida", "neuryeogo_hada"]] },
+  { id: "johta", lemma: "좋다", stem: "좋", pos: "adjective", meaningRu: "хороший", level: "A1", topic: "basic", isCommon: true, excludedChainParts: [["ajida_eojida", "go_sipda"], ["ajida_eojida", "neuryeogo_hada", "past_tense", "myeon_eumyeon"]] },
+  { id: "nappeuda", lemma: "나쁘다", stem: "나쁘", pos: "adjective", meaningRu: "плохой", level: "A1", topic: "basic", isCommon: true, excludedChainParts: [["ajida_eojida", "go_sipda"], ["ajida_eojida", "ji_anta", "geot_gatda_verb_present", "eul_ttae"], ["ajida_eojida", "ji_anta", "past_tense", "eul_ttae"]] },
+  { id: "jaemiitda", lemma: "재미있다", stem: "재미있", pos: "adjective", meaningRu: "интересный", level: "A1", topic: "feelings", isCommon: true, excludedChainParts: [["ajida_eojida", "go_sipda"], ["ajida_eojida", "neuryeogo_hada", "past_tense", "myeon_eumyeon"]] },
+  { id: "jaemieopda", lemma: "재미없다", stem: "재미없", pos: "adjective", meaningRu: "скучный", level: "A1", topic: "feelings", isCommon: true, excludedChainParts: [["ajida_eojida", "go_sipda"], ["neuryeogo_hada", "past_tense", "myeon_eumyeon"], ["ji_anta", "geot_gatda_adj", "eul_ttae"], ["ji_anta", "geot_gatda_adj", "past_tense", "eul_ttae"], ["ji_anta", "geot_gatda_adj", "past_tense", "myeon_eumyeon"], ["ajida_eojida", "geot_gatda_adj", "ji_anta", "eul_ttae"]] },
   { id: "yeppeuda", lemma: "예쁘다", stem: "예쁘", pos: "adjective", meaningRu: "красивый", level: "A1", topic: "appearance", isCommon: true },
-  { id: "bappeuda", lemma: "바쁘다", stem: "바쁘", pos: "adjective", meaningRu: "занятой", level: "A1", topic: "daily_life", isCommon: true },
+  { id: "bappeuda", lemma: "바쁘다", stem: "바쁘", pos: "adjective", meaningRu: "занятой", level: "A1", topic: "daily_life", isCommon: true, excludedChainParts: [["ajida_eojida", "neuryeogo_hada", "past_tense", "myeon_eumyeon"]] },
   { id: "haengbokhada", lemma: "행복하다", stem: "행복하", pos: "adjective", meaningRu: "счастливый", level: "A2", topic: "feelings", isCommon: true },
-  { id: "seulpeuda", lemma: "슬프다", stem: "슬프", pos: "adjective", meaningRu: "грустный", level: "A2", topic: "feelings", isCommon: true },
-  { id: "deopda", lemma: "덥다", stem: "덥", pos: "adjective", meaningRu: "жарко", level: "A1", topic: "weather", isCommon: true },
-  { id: "chupda", lemma: "춥다", stem: "춥", pos: "adjective", meaningRu: "холодно", level: "A1", topic: "weather", isCommon: true },
-  { id: "tteutteuthada", lemma: "따뜻하다", stem: "따뜻하", pos: "adjective", meaningRu: "теплый", level: "A2", topic: "weather", isCommon: true },
-  { id: "siwonhada", lemma: "시원하다", stem: "시원하", pos: "adjective", meaningRu: "прохладный / освежающий", level: "A1", topic: "weather", isCommon: true },
-  { id: "bissada", lemma: "비싸다", stem: "비싸", pos: "adjective", meaningRu: "дорогой", level: "A1", topic: "shopping", isCommon: true },
-  { id: "ssada", lemma: "싸다", stem: "싸", pos: "adjective", meaningRu: "дешевый", level: "A1", topic: "shopping", isCommon: true },
-  { id: "eoryeopda", lemma: "어렵다", stem: "어렵", pos: "adjective", meaningRu: "трудный", level: "A1", topic: "study", isCommon: true },
-  { id: "swipda", lemma: "쉽다", stem: "쉽", pos: "adjective", meaningRu: "легкий", level: "A1", topic: "study", isCommon: true },
+  { id: "seulpeuda", lemma: "슬프다", stem: "슬프", pos: "adjective", meaningRu: "грустный", level: "A2", topic: "feelings", isCommon: true, excludedChainParts: [["ajida_eojida", "go_sipda"], ["ajida_eojida", "neuryeogo_hada", "past_tense", "myeon_eumyeon"]] },
+  { id: "deopda", lemma: "덥다", stem: "덥", pos: "adjective", meaningRu: "жарко", level: "A1", topic: "weather", isCommon: true, excludedChainParts: [["ajida_eojida", "go_sipda"], ["ajida_eojida", "neuryeogo_hada", "past_tense", "myeon_eumyeon"]] },
+  { id: "chupda", lemma: "춥다", stem: "춥", pos: "adjective", meaningRu: "холодно", level: "A1", topic: "weather", isCommon: true, excludedChainParts: [["ajida_eojida", "go_sipda"], ["neuryeogo_hada", "past_tense", "myeon_eumyeon"]] },
+  { id: "tteutteuthada", lemma: "따뜻하다", stem: "따뜻하", pos: "adjective", meaningRu: "теплый", level: "A2", topic: "weather", isCommon: true, excludedChainParts: [["ajida_eojida", "go_sipda"], ["ajida_eojida", "neuryeogo_hada", "past_tense", "myeon_eumyeon"], ["geot_gatda_adj", "past_tense", "myeon_eumyeon"], ["ajida_eojida", "geot_gatda_verb_present", "past_tense", "myeon_eumyeon"]] },
+  { id: "siwonhada", lemma: "시원하다", stem: "시원하", pos: "adjective", meaningRu: "прохладный / освежающий", level: "A1", topic: "weather", isCommon: true, excludedChainParts: [["ajida_eojida", "go_sipda"], ["ajida_eojida", "neuryeogo_hada", "past_tense", "myeon_eumyeon"], ["ajida_eojida", "geot_gatda_adj", "ji_anta", "eul_ttae"], ["ajida_eojida", "ji_anta", "geot_gatda_verb_present", "eul_ttae"]] },
+  { id: "bissada", lemma: "비싸다", stem: "비싸", pos: "adjective", meaningRu: "дорогой", level: "A1", topic: "shopping", isCommon: true, excludedChainParts: [["ajida_eojida", "go_sipda"], ["ajida_eojida", "neuryeogo_hada"]] },
+  { id: "ssada", lemma: "싸다", stem: "싸", pos: "adjective", meaningRu: "дешевый", level: "A1", topic: "shopping", isCommon: true, excludedChainParts: [["ajida_eojida", "go_sipda"], ["ajida_eojida", "neuryeogo_hada"]] },
+  { id: "eoryeopda", lemma: "어렵다", stem: "어렵", pos: "adjective", meaningRu: "трудный", level: "A1", topic: "study", isCommon: true, excludedChainParts: [["ajida_eojida", "go_sipda"], ["ajida_eojida", "neuryeogo_hada"]] },
+  { id: "swipda", lemma: "쉽다", stem: "쉽", pos: "adjective", meaningRu: "легкий", level: "A1", topic: "study", isCommon: true, excludedChainParts: [["ajida_eojida", "go_sipda"], ["ajida_eojida", "neuryeogo_hada"]] },
   { id: "gakkapda", lemma: "가깝다", stem: "가깝", pos: "adjective", meaningRu: "близкий", level: "A2", topic: "location", isCommon: true },
   { id: "meolda", lemma: "멀다", stem: "멀", pos: "adjective", meaningRu: "далекий", level: "A2", topic: "location", isCommon: true },
-  { id: "apeuda", lemma: "아프다", stem: "아프", pos: "adjective", meaningRu: "больной / болеть / больно", level: "A1", topic: "health", isCommon: true },
+  { id: "apeuda", lemma: "아프다", stem: "아프", pos: "adjective", meaningRu: "больной / болеть / больно", level: "A1", topic: "health", isCommon: true, excludedChainParts: [["ajida_eojida", "go_sipda"]] },
   { id: "dareuda", lemma: "다르다", stem: "다르", pos: "adjective", meaningRu: "другой / отличаться", level: "A1", topic: "description", isCommon: true }
 ];
 
@@ -213,15 +213,15 @@ const conjugationMap = {
 
 const grammaticalCompatibilityMap = {
   past_tense: { allowedPrev: ["go_sipda", "neuryeogo_hada", "ji_anta", "geot_gatda_adj", "geot_gatda_verb_present", "ajida_eojida"], allowedNext: ["jiman", "eul_ttae", "myeon_eumyeon"] },
-  go_sipda: { allowedPrev: ["ajida_eojida"], allowedNext: ["past_tense", "aseo_eoseo", "jiman", "eul_ttae", "ji_anta", "geot_gatda_adj", "myeon_eumyeon"] },
+  go_sipda: { allowedPrev: ["ajida_eojida"], allowedNext: ["past_tense", "ajida_eojida", "aseo_eoseo", "jiman", "eul_ttae", "ji_anta", "geot_gatda_adj", "myeon_eumyeon"] },
   neuryeogo_hada: { allowedPrev: ["ajida_eojida", "ji_anta"], allowedNext: ["past_tense", "aseo_eoseo", "jiman", "eul_ttae", "ji_anta", "geot_gatda_verb_present", "myeon_eumyeon"] },
   aseo_eoseo: { allowedPrev: ["go_sipda", "neuryeogo_hada", "ji_anta", "geot_gatda_adj", "geot_gatda_verb_present", "ajida_eojida"], allowedNext: [] },
   jiman: { allowedPrev: ["past_tense", "go_sipda", "neuryeogo_hada", "ji_anta", "geot_gatda_adj", "geot_gatda_verb_present", "ajida_eojida"], allowedNext: [] },
   eul_ttae: { allowedPrev: ["past_tense", "go_sipda", "neuryeogo_hada", "ji_anta", "geot_gatda_adj", "geot_gatda_verb_present", "ajida_eojida"], allowedNext: [] },
   ji_anta: { allowedPrev: ["go_sipda", "neuryeogo_hada", "geot_gatda_adj", "geot_gatda_verb_present", "ajida_eojida"], allowedNext: ["past_tense", "aseo_eoseo", "jiman", "eul_ttae", "neuryeogo_hada", "myeon_eumyeon", "geot_gatda_adj", "geot_gatda_verb_present"] },
-  geot_gatda_adj: { allowedPrev: ["go_sipda", "ji_anta"], allowedNext: ["past_tense", "aseo_eoseo", "jiman", "eul_ttae", "ji_anta", "myeon_eumyeon"] },
+  geot_gatda_adj: { allowedPrev: ["go_sipda", "ji_anta", "ajida_eojida"], allowedNext: ["past_tense", "aseo_eoseo", "jiman", "eul_ttae", "ji_anta", "myeon_eumyeon"] },
   geot_gatda_verb_present: { allowedPrev: ["neuryeogo_hada", "ji_anta", "ajida_eojida"], allowedNext: ["past_tense", "aseo_eoseo", "jiman", "eul_ttae", "ji_anta", "myeon_eumyeon"] },
-  ajida_eojida: { allowedPrev: [], allowedNext: ["past_tense", "go_sipda", "neuryeogo_hada", "aseo_eoseo", "jiman", "eul_ttae", "ji_anta", "geot_gatda_verb_present", "myeon_eumyeon"] },
+  ajida_eojida: { allowedPrev: ["go_sipda"], allowedNext: ["past_tense", "go_sipda", "neuryeogo_hada", "aseo_eoseo", "jiman", "eul_ttae", "ji_anta", "geot_gatda_adj", "geot_gatda_verb_present", "myeon_eumyeon"] },
   myeon_eumyeon: { allowedPrev: ["past_tense", "go_sipda", "neuryeogo_hada", "ji_anta", "geot_gatda_adj", "geot_gatda_verb_present", "ajida_eojida"], allowedNext: [] }
 };
 
@@ -229,10 +229,15 @@ const compatibilityConditions = {
   ji_anta: {
     geot_gatda_adj: { onlyIfResultType: "adjective", example: "예쁘지 않은 것 같다" },
     geot_gatda_verb_present: { onlyIfResultType: "verb", example: "먹지 않는 것 같다" }
+  },
+  // -아지다 makes a verb, and -(으)ㄴ 것 같다 then guesses a completed change: 예뻐진 것 같다.
+  ajida_eojida: {
+    geot_gatda_adj: { allowInputType: "verb", example: "예뻐진 것 같다" }
   }
 };
 
 const naturalChainWhitelist = [
+  ["go_sipda", "ajida_eojida"],
   ["go_sipda", "past_tense"],
   ["ji_anta", "past_tense"],
   ["go_sipda", "ji_anta"],
@@ -278,6 +283,7 @@ const naturalTripleChainWhitelist = [
   ["ji_anta", "past_tense", "jiman"],
   ["ji_anta", "past_tense", "eul_ttae"],
   ["ji_anta", "past_tense", "myeon_eumyeon"],
+  ["go_sipda", "ajida_eojida", "past_tense"],
   ["go_sipda", "ji_anta", "past_tense"],
   ["go_sipda", "ji_anta", "aseo_eoseo"],
   ["go_sipda", "ji_anta", "jiman"],
@@ -305,10 +311,7 @@ const naturalTripleChainWhitelist = [
   ["ajida_eojida", "geot_gatda_verb_present", "aseo_eoseo"],
   ["ajida_eojida", "geot_gatda_verb_present", "jiman"],
   ["ajida_eojida", "geot_gatda_verb_present", "eul_ttae"],
-  ["ajida_eojida", "geot_gatda_verb_present", "myeon_eumyeon"],
-  ["past_tense", "jiman"],
-  ["past_tense", "eul_ttae"],
-  ["past_tense", "myeon_eumyeon"]
+  ["ajida_eojida", "geot_gatda_verb_present", "myeon_eumyeon"]
 ];
 
 const naturalQuadChainWhitelist = [
@@ -331,6 +334,56 @@ const naturalQuadChainWhitelist = [
   ["ajida_eojida", "geot_gatda_verb_present", "ji_anta", "eul_ttae"],
   ["ajida_eojida", "geot_gatda_verb_present", "ji_anta", "myeon_eumyeon"]
 ];
+
+// These predicate combinations are valid independently of their final ending.
+// Keep a reviewed list: do not turn every type-compatible path into an exercise.
+function completeReviewedExerciseChains() {
+  const lists = new Map([
+    [2, naturalChainWhitelist],
+    [3, naturalTripleChainWhitelist],
+    [4, naturalQuadChainWhitelist]
+  ]);
+  function add(order) {
+    const list = lists.get(order.length);
+    if (list && !list.some((item) => sameGrammarOrder(item, order))) list.push(order);
+  }
+  [
+    ["neuryeogo_hada", "past_tense"],
+    ["ji_anta", "neuryeogo_hada"],
+    ["geot_gatda_adj", "past_tense"],
+    ["geot_gatda_verb_present", "past_tense"],
+    ["ajida_eojida", "past_tense"],
+    ["ajida_eojida", "go_sipda"],
+    ["ajida_eojida", "neuryeogo_hada"],
+    ["go_sipda", "ajida_eojida", "ji_anta"],
+    ["go_sipda", "ajida_eojida", "geot_gatda_verb_present"],
+    ["ajida_eojida", "geot_gatda_adj"],
+    ["ajida_eojida", "geot_gatda_adj", "ji_anta"],
+    ["go_sipda", "ji_anta", "geot_gatda_adj"],
+    ["neuryeogo_hada", "ji_anta", "geot_gatda_verb_present"],
+    ["ji_anta", "neuryeogo_hada", "geot_gatda_verb_present"],
+    ["ajida_eojida", "ji_anta", "geot_gatda_verb_present"]
+  ].forEach(add);
+
+  // Add tense and clause endings to reviewed predicates, up to four patterns.
+  // A terminal clause ending is never extended, and past + -아서 stays blocked.
+  for (let length = 1; length < 4; length += 1) {
+    const prefixes = length === 1
+      ? grammarList.map((grammar) => [grammar.id])
+      : [...lists.get(length)];
+    for (const prefix of prefixes) {
+      const lastId = prefix[prefix.length - 1];
+      for (const ending of ["past_tense", "aseo_eoseo", "jiman", "eul_ttae", "myeon_eumyeon"]) {
+        if (prefix.includes(ending)) continue;
+        if (!grammaticalCompatibilityMap[lastId].allowedNext.includes(ending) ||
+            !grammaticalCompatibilityMap[ending].allowedPrev.includes(lastId)) continue;
+        add([...prefix, ending]);
+      }
+    }
+  }
+}
+
+completeReviewedExerciseChains();
 
 const exampleBank = {
   single: {
@@ -1397,14 +1450,14 @@ function canFollow(firstGrammarId, secondGrammarId, firstResultType) {
   }
 
   const condition = compatibilityConditions?.[firstGrammarId]?.[secondGrammarId];
-  if (condition && condition.onlyIfResultType !== firstResultType) {
+  if (condition?.onlyIfResultType && condition.onlyIfResultType !== firstResultType) {
     return {
       ok: false,
       reason: `Это соединение возможно только если результат первой грамматики имеет тип "${condition.onlyIfResultType}".`
     };
   }
 
-  if (!second.inputType.includes(firstResultType)) {
+  if (!second.inputType.includes(firstResultType) && condition?.allowInputType !== firstResultType) {
     return {
       ok: false,
       reason: `Вторая грамматика не присоединяется к типу "${firstResultType}".`
@@ -2248,7 +2301,7 @@ function applyGrammarStep(word, currentState, grammarId) {
   };
 }
 
-function conjugateChain(word, grammarIds) {
+function conjugateChain(word, grammarIds, options = {}) {
   if (!Array.isArray(grammarIds) || grammarIds.length === 0) {
     return { ok: false, reason: "Нужно передать хотя бы одну грамматику." };
   }
@@ -2256,6 +2309,10 @@ function conjugateChain(word, grammarIds) {
   const orderResult = findValidGrammarOrder(grammarIds, word.pos);
   if (!orderResult.ok) {
     return { ok: false, reason: orderResult.reason };
+  }
+
+  if (options.preferNaturalOrder) {
+    orderResult.order = orderResult.allOrders.find((order) => isNaturalResolvedOrder(order)) || orderResult.order;
   }
 
   let currentState = {
@@ -2327,6 +2384,10 @@ function toPoliteAnswer(form, resultType, lastGrammarId) {
 
   if (resultType === "noun_phrase") {
     return `${form}예요`;
+  }
+
+  if (lastGrammarId === "ajida_eojida" && form.endsWith("지다")) {
+    return `${form.slice(0, -2)}져요`;
   }
 
   if (form.endsWith("다")) {
@@ -2465,6 +2526,15 @@ function getGrammarCountsByDifficulty(difficulty = "easy") {
   }
 }
 
+// A word can sound odd in a chain that is otherwise fine (e.g. 예뻐지려고 하다).
+// excludedChainParts lists grammar sequences that must not appear, in this order,
+// inside the resolved chain; every longer chain containing them is excluded too.
+function isChainExcludedForWord(word, order = []) {
+  const parts = Array.isArray(word?.excludedChainParts) ? word.excludedChainParts : [];
+  return parts.some((part) => order.some((_, start) =>
+    part.every((id, offset) => order[start + offset] === id)));
+}
+
 function wordSupportsGrammarChain(word, grammarIds = []) {
   // Editorial exclusions concern the exercise bank, not whether the form can be conjugated.
   const excludedChains = Array.isArray(word?.excludedExerciseChains) ? word.excludedExerciseChains : [];
@@ -2501,9 +2571,17 @@ function generateExercise(selectedGrammarIds, preferredWordId, options = {}) {
   for (const word of candidates) {
     if (!wordSupportsGrammarChain(word, selectedGrammarIds)) continue;
 
-    const chainResult = conjugateChain(word, selectedGrammarIds);
+    let chainResult = conjugateChain(word, selectedGrammarIds, { preferNaturalOrder: true });
     if (!chainResult.ok) continue;
     if (grammarCount >= 2 && !isNaturalResolvedOrder(chainResult.order, grammarCount)) continue;
+    if (isChainExcludedForWord(word, chainResult.order)) {
+      // Another natural order of the same grammars may still suit this word.
+      const alternative = chainResult.allOrders.find((order) =>
+        isNaturalResolvedOrder(order, grammarCount) && !isChainExcludedForWord(word, order));
+      if (!alternative) continue;
+      chainResult = conjugateChain(word, alternative);
+      if (!chainResult.ok || !sameGrammarOrder(chainResult.order, alternative)) continue;
+    }
 
     const explanation = buildConnectionExplanation(word, chainResult.order);
 
@@ -3837,6 +3915,7 @@ module.exports = {
   conjugateChain,
   getGrammarCountsByDifficulty,
   isNaturalResolvedOrder,
+  isChainExcludedForWord,
   generateStudentOptions,
   getEncouragementMessage,
   getChainExample,

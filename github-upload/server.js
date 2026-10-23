@@ -316,6 +316,7 @@ function addEnglishLocalFallback(example, exercise) {
 }
 
 const CURATED_PAST_WISH_EXAMPLES = {
+  datda: ["밖이 시끄러워서 창문을 닫고 싶었어요.", "На улице было шумно, поэтому мне хотелось закрыть окно.", "хотелось закрыть окно", "It was noisy outside, so I wanted to close the window.", "wanted to close the window"],
   gada: ["어제는 너무 피곤해서 집에 일찍 가고 싶었어요.", "Вчера я очень устал(а), поэтому захотелось пораньше пойти домой.", "захотелось пораньше пойти домой", "I was very tired yesterday, so I wanted to go home early.", "wanted to go home early"],
   oda: ["친구와 약속이 있어서 일찍 오고 싶었어요.", "У меня была встреча с другом, поэтому хотелось прийти пораньше.", "хотелось прийти пораньше", "I had plans with a friend, so I wanted to arrive early.", "wanted to arrive early"],
   meokda: ["점심을 못 먹어서 매운 음식을 먹고 싶었어요.", "Я пропустил(а) обед, поэтому захотелось острой еды.", "захотелось острой еды", "I missed lunch, so I wanted to eat spicy food.", "wanted to eat spicy food"],

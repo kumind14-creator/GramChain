@@ -48,6 +48,24 @@ const singleGrammarTests = [
 
 const chainTests = [
   {
+    wordId: "hada",
+    grammarIds: ["ajida_eojida", "go_sipda"],
+    expectedOrder: ["go_sipda", "ajida_eojida"],
+    expected: "하고 싶어지다"
+  },
+  {
+    wordId: "hada",
+    grammarIds: ["past_tense", "ajida_eojida", "go_sipda"],
+    expectedOrder: ["go_sipda", "ajida_eojida", "past_tense"],
+    expected: "하고 싶어졌"
+  },
+  {
+    wordId: "meokda",
+    grammarIds: ["go_sipda", "ajida_eojida"],
+    expectedOrder: ["go_sipda", "ajida_eojida"],
+    expected: "먹고 싶어지다"
+  },
+  {
     wordId: "meokda",
     grammarIds: ["go_sipda", "geot_gatda_adj"],
     expectedOrder: ["go_sipda", "geot_gatda_adj"],
@@ -143,6 +161,10 @@ const naturalnessTests = [
 naturalnessTests[0] = { order: ["ji_anta", "past_tense"], expected: true };
 naturalnessTests.splice(1, 0, { order: ["past_tense", "ji_anta"], expected: false });
 naturalnessTests.splice(2, 0, { order: ["go_sipda", "past_tense"], expected: true });
+naturalnessTests.push(
+  { order: ["go_sipda", "ajida_eojida"], expected: true },
+  { order: ["go_sipda", "ajida_eojida", "past_tense"], expected: true }
+);
 
 const freePracticeDifficultyTests = [
   { difficulty: "easy", expectedGrammarCount: 2 },
@@ -347,6 +369,24 @@ function runExampleTests() {
   });
 }
 
+function runDesireChangeExerciseTests() {
+  return [
+    { wordId: "hada", ids: ["ajida_eojida", "go_sipda"], answer: "하고 싶어져요" },
+    { wordId: "hada", ids: ["past_tense", "ajida_eojida", "go_sipda"], answer: "하고 싶어졌어요" },
+    { wordId: "meokda", ids: ["go_sipda", "ajida_eojida"], answer: "먹고 싶어져요" }
+  ].map(({ wordId, ids, answer }) => {
+    const exercise = generateExercise(ids, wordId);
+    const batch = generateExerciseBatch(ids, { count: 5 });
+    return {
+      name: `desire change exercise ${answer}`,
+      expected: answer,
+      actual: exercise.correctAnswer,
+      passed: exercise.ok && batch.ok && batch.totalExercises === 5 &&
+        exercise.correctAnswer === answer && checkExerciseAnswer(exercise, answer).ok
+    };
+  });
+}
+
 function printResults(results) {
   results.forEach((result) => {
     const prefix = result.passed ? "PASS" : "FAIL";
@@ -374,7 +414,8 @@ function runAllTests() {
     ...runNaturalnessTests(),
     ...runFreePracticeDifficultyTests(),
     ...runAppLayerTests(),
-    ...runExampleTests()
+    ...runExampleTests(),
+    ...runDesireChangeExerciseTests()
   ];
 
   printResults(results);
