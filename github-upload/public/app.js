@@ -111,7 +111,7 @@ const uiText = {
     easyDescription: "2 грамматики.",
     notConnectable: "Эти грамматики не соединяются.",
     chooseOtherGrammars: "Выбрать другие грамматики",
-    tryConnect: "Соедините выбранные грамматики с этим словом. Впишите только получившуюся форму слова, а не полное предложение.",
+    tryConnect: "Соедините выбранные грамматики с этим словом в правильном порядке. Впишите только получившуюся форму слова, а не полное предложение.",
     exercise: "Упражнение",
     ofTotal: "{current} из {total}",
     word: "Слово",
@@ -197,7 +197,7 @@ const uiText = {
     easyDescription: "2 grammar patterns.",
     notConnectable: "These grammar patterns do not connect.",
     chooseOtherGrammars: "Choose other grammar patterns",
-    tryConnect: "Connect the selected grammar patterns with this word. Enter only the completed word form, not a full sentence.",
+    tryConnect: "Combine the selected grammar patterns with this word in the correct order. Enter only the completed word form, not a full sentence.",
     exercise: "Exercise",
     ofTotal: "{current} of {total}",
     word: "Word",
@@ -1574,6 +1574,7 @@ function renderExerciseEnhanced() {
   const exercise = getCurrentExercise();
 
   if (!session?.ok) {
+    document.body.dataset.view = "exercise-unavailable";
     const connectText = state.currentLanguage === "en" ? session?.messageEn : session?.message;
     const connectMessage = connectText && (state.currentLanguage === "en" || connectText !== "Эти грамматики не соединяются.")
       ? `<p>${escapeHtml(connectText)}</p>`
