@@ -720,6 +720,12 @@ function bindSpeakingActions() {
 
     const action = button.dataset.action;
 
+    // Keep the typed code when the start screen is re-rendered (stage or language switch).
+    const typedCode = document.getElementById("participantCode");
+    if (typedCode) {
+      speakingState.participantCode = String(typedCode.value || "").trim();
+    }
+
     try {
       if (action === "language-ru") {
         setLanguage("ru");
