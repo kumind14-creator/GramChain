@@ -43,23 +43,23 @@ const MISTAKES_STORAGE_PREFIX = "gramchain_mistakes_";
 const MAX_MISTAKE_HISTORY = 200;
 const TASK_TEXT = {
   task_1: {
-    ru: "Введите код доступа и начните назначенную учебную сессию.",
+    ru: "Введите код участника и начните учебную сессию.",
     en: "Enter the access code and start the assigned learning session."
   },
   task_2: {
-    ru: "Начните свою тренировку, выбрав как минимум две грамматические конструкции.",
+    ru: "Начните «Свою тренировку», выбрав не меньше двух грамматик.",
     en: "Start a Custom practice set by selecting at least two grammar patterns."
   },
   task_3: {
-    ru: "Выполните одно упражнение и ознакомьтесь с обратной связью.",
+    ru: "Выполните одно упражнение и посмотрите обратную связь.",
     en: "Complete one exercise and review the feedback."
   },
   task_4: {
-    ru: "Просмотрите свои ошибки.",
+    ru: "Откройте раздел «Мои ошибки» и просмотрите свои ошибки.",
     en: "Review your mistakes."
   },
   task_5: {
-    ru: "Выберите любой режим в свободной тренировке.",
+    ru: "Откройте «Свободную тренировку» и выберите любой из двух режимов.",
     en: "Choose either mode in Free practice."
   }
 };
@@ -100,6 +100,7 @@ const uiText = {
     freePractice: "Свободная тренировка",
     freePracticeIntro: "Выберите, хотите потренировать цепочки из 2 или из 3-4 грамматик.",
     chooseGrammars: "Выберите от 2 до 4 грамматик, сочетания которых хотите потренировать.",
+    patternLegend: "V — глагол, A — прилагательное.",
     selectedNow: "Сейчас выбрано: {count}",
     backHome: "На главную",
     backToStartPage: "На главное меню",
@@ -186,6 +187,7 @@ const uiText = {
     freePractice: "Free practice",
     freePracticeIntro: "Choose whether you want to practice chains of 2 or 3-4 grammar patterns.",
     chooseGrammars: "Choose 2 to 4 grammar patterns whose combinations you want to practise.",
+    patternLegend: "V — verb, A — adjective.",
     selectedNow: "Selected now: {count}",
     backHome: "Back to home",
     backToStartPage: "Back to main menu",
@@ -1093,6 +1095,7 @@ function renderSelfSelection() {
         ${renderLanguageToggle()}
         <h2>${t("selfPractice")}</h2>
         <p>${t("chooseGrammars")}</p>
+        <div class="helper">${t("patternLegend")}</div>
       </div>
 
       <div class="grammar-grid">${grammars}</div>
