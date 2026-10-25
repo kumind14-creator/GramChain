@@ -139,7 +139,7 @@ const wordList = [
   { id: "johta", lemma: "좋다", stem: "좋", pos: "adjective", meaningRu: "хороший", level: "A1", topic: "basic", isCommon: true, excludedChainParts: [["ajida_eojida", "go_sipda"], ["ajida_eojida", "neuryeogo_hada", "past_tense", "myeon_eumyeon"]] },
   { id: "nappeuda", lemma: "나쁘다", stem: "나쁘", pos: "adjective", meaningRu: "плохой", level: "A1", topic: "basic", isCommon: true, excludedChainParts: [["ajida_eojida", "go_sipda"], ["ajida_eojida", "ji_anta", "geot_gatda_verb_present", "eul_ttae"], ["ajida_eojida", "ji_anta", "past_tense", "eul_ttae"]] },
   { id: "jaemiitda", lemma: "재미있다", stem: "재미있", pos: "adjective", meaningRu: "интересный", level: "A1", topic: "feelings", isCommon: true, excludedChainParts: [["ajida_eojida", "go_sipda"], ["ajida_eojida", "neuryeogo_hada", "past_tense", "myeon_eumyeon"]] },
-  { id: "jaemieopda", lemma: "재미없다", stem: "재미없", pos: "adjective", meaningRu: "скучный", level: "A1", topic: "feelings", isCommon: true, excludedChainParts: [["ajida_eojida", "go_sipda"], ["neuryeogo_hada", "past_tense", "myeon_eumyeon"], ["ji_anta", "geot_gatda_adj", "eul_ttae"], ["ji_anta", "geot_gatda_adj", "past_tense", "eul_ttae"], ["ji_anta", "geot_gatda_adj", "past_tense", "myeon_eumyeon"], ["ajida_eojida", "geot_gatda_adj", "ji_anta", "eul_ttae"]] },
+  { id: "jaemieopda", lemma: "재미없다", stem: "재미없", pos: "adjective", meaningRu: "скучный", level: "A1", topic: "feelings", isCommon: true, excludedChainParts: [["ajida_eojida", "go_sipda"], ["neuryeogo_hada", "past_tense", "myeon_eumyeon"], ["ji_anta", "geot_gatda_adj", "eul_ttae"], ["ji_anta", "geot_gatda_adj", "past_tense", "eul_ttae"], ["ji_anta", "geot_gatda_adj", "past_tense", "myeon_eumyeon"]] },
   { id: "yeppeuda", lemma: "예쁘다", stem: "예쁘", pos: "adjective", meaningRu: "красивый", level: "A1", topic: "appearance", isCommon: true },
   { id: "bappeuda", lemma: "바쁘다", stem: "바쁘", pos: "adjective", meaningRu: "занятой", level: "A1", topic: "daily_life", isCommon: true, excludedChainParts: [["ajida_eojida", "neuryeogo_hada", "past_tense", "myeon_eumyeon"]] },
   { id: "haengbokhada", lemma: "행복하다", stem: "행복하", pos: "adjective", meaningRu: "счастливый", level: "A2", topic: "feelings", isCommon: true },
@@ -147,7 +147,7 @@ const wordList = [
   { id: "deopda", lemma: "덥다", stem: "덥", pos: "adjective", meaningRu: "жарко", level: "A1", topic: "weather", isCommon: true, excludedChainParts: [["ajida_eojida", "go_sipda"], ["ajida_eojida", "neuryeogo_hada", "past_tense", "myeon_eumyeon"]] },
   { id: "chupda", lemma: "춥다", stem: "춥", pos: "adjective", meaningRu: "холодно", level: "A1", topic: "weather", isCommon: true, excludedChainParts: [["ajida_eojida", "go_sipda"], ["neuryeogo_hada", "past_tense", "myeon_eumyeon"]] },
   { id: "tteutteuthada", lemma: "따뜻하다", stem: "따뜻하", pos: "adjective", meaningRu: "теплый", level: "A2", topic: "weather", isCommon: true, excludedChainParts: [["ajida_eojida", "go_sipda"], ["ajida_eojida", "neuryeogo_hada", "past_tense", "myeon_eumyeon"], ["geot_gatda_adj", "past_tense", "myeon_eumyeon"], ["ajida_eojida", "geot_gatda_verb_present", "past_tense", "myeon_eumyeon"]] },
-  { id: "siwonhada", lemma: "시원하다", stem: "시원하", pos: "adjective", meaningRu: "прохладный / освежающий", level: "A1", topic: "weather", isCommon: true, excludedChainParts: [["ajida_eojida", "go_sipda"], ["ajida_eojida", "neuryeogo_hada", "past_tense", "myeon_eumyeon"], ["ajida_eojida", "geot_gatda_adj", "ji_anta", "eul_ttae"], ["ajida_eojida", "ji_anta", "geot_gatda_verb_present", "eul_ttae"]] },
+  { id: "siwonhada", lemma: "시원하다", stem: "시원하", pos: "adjective", meaningRu: "прохладный / освежающий", level: "A1", topic: "weather", isCommon: true, excludedChainParts: [["ajida_eojida", "go_sipda"], ["ajida_eojida", "neuryeogo_hada", "past_tense", "myeon_eumyeon"], ["ajida_eojida", "ji_anta", "geot_gatda_verb_present", "eul_ttae"]] },
   { id: "bissada", lemma: "비싸다", stem: "비싸", pos: "adjective", meaningRu: "дорогой", level: "A1", topic: "shopping", isCommon: true, excludedChainParts: [["ajida_eojida", "go_sipda"], ["ajida_eojida", "neuryeogo_hada"]] },
   { id: "ssada", lemma: "싸다", stem: "싸", pos: "adjective", meaningRu: "дешевый", level: "A1", topic: "shopping", isCommon: true, excludedChainParts: [["ajida_eojida", "go_sipda"], ["ajida_eojida", "neuryeogo_hada"]] },
   { id: "eoryeopda", lemma: "어렵다", stem: "어렵", pos: "adjective", meaningRu: "трудный", level: "A1", topic: "study", isCommon: true, excludedChainParts: [["ajida_eojida", "go_sipda"], ["ajida_eojida", "neuryeogo_hada"]] },
@@ -219,9 +219,9 @@ const grammaticalCompatibilityMap = {
   jiman: { allowedPrev: ["past_tense", "go_sipda", "neuryeogo_hada", "ji_anta", "geot_gatda_adj", "geot_gatda_verb_present", "ajida_eojida"], allowedNext: [] },
   eul_ttae: { allowedPrev: ["past_tense", "go_sipda", "neuryeogo_hada", "ji_anta", "geot_gatda_adj", "geot_gatda_verb_present", "ajida_eojida"], allowedNext: [] },
   ji_anta: { allowedPrev: ["go_sipda", "neuryeogo_hada", "geot_gatda_adj", "geot_gatda_verb_present", "ajida_eojida"], allowedNext: ["past_tense", "aseo_eoseo", "jiman", "eul_ttae", "neuryeogo_hada", "myeon_eumyeon", "geot_gatda_adj", "geot_gatda_verb_present"] },
-  geot_gatda_adj: { allowedPrev: ["go_sipda", "ji_anta", "ajida_eojida"], allowedNext: ["past_tense", "aseo_eoseo", "jiman", "eul_ttae", "ji_anta", "myeon_eumyeon"] },
+  geot_gatda_adj: { allowedPrev: ["go_sipda", "ji_anta"], allowedNext: ["past_tense", "aseo_eoseo", "jiman", "eul_ttae", "ji_anta", "myeon_eumyeon"] },
   geot_gatda_verb_present: { allowedPrev: ["neuryeogo_hada", "ji_anta", "ajida_eojida"], allowedNext: ["past_tense", "aseo_eoseo", "jiman", "eul_ttae", "ji_anta", "myeon_eumyeon"] },
-  ajida_eojida: { allowedPrev: ["go_sipda"], allowedNext: ["past_tense", "go_sipda", "neuryeogo_hada", "aseo_eoseo", "jiman", "eul_ttae", "ji_anta", "geot_gatda_adj", "geot_gatda_verb_present", "myeon_eumyeon"] },
+  ajida_eojida: { allowedPrev: ["go_sipda"], allowedNext: ["past_tense", "go_sipda", "neuryeogo_hada", "aseo_eoseo", "jiman", "eul_ttae", "ji_anta", "geot_gatda_verb_present", "myeon_eumyeon"] },
   myeon_eumyeon: { allowedPrev: ["past_tense", "go_sipda", "neuryeogo_hada", "ji_anta", "geot_gatda_adj", "geot_gatda_verb_present", "ajida_eojida"], allowedNext: [] }
 };
 
@@ -229,10 +229,6 @@ const compatibilityConditions = {
   ji_anta: {
     geot_gatda_adj: { onlyIfResultType: "adjective", example: "예쁘지 않은 것 같다" },
     geot_gatda_verb_present: { onlyIfResultType: "verb", example: "먹지 않는 것 같다" }
-  },
-  // -아지다 makes a verb, and -(으)ㄴ 것 같다 then guesses a completed change: 예뻐진 것 같다.
-  ajida_eojida: {
-    geot_gatda_adj: { allowInputType: "verb", example: "예뻐진 것 같다" }
   }
 };
 
@@ -357,8 +353,6 @@ function completeReviewedExerciseChains() {
     ["ajida_eojida", "neuryeogo_hada"],
     ["go_sipda", "ajida_eojida", "ji_anta"],
     ["go_sipda", "ajida_eojida", "geot_gatda_verb_present"],
-    ["ajida_eojida", "geot_gatda_adj"],
-    ["ajida_eojida", "geot_gatda_adj", "ji_anta"],
     ["go_sipda", "ji_anta", "geot_gatda_adj"],
     ["neuryeogo_hada", "ji_anta", "geot_gatda_verb_present"],
     ["ji_anta", "neuryeogo_hada", "geot_gatda_verb_present"],
@@ -1450,14 +1444,14 @@ function canFollow(firstGrammarId, secondGrammarId, firstResultType) {
   }
 
   const condition = compatibilityConditions?.[firstGrammarId]?.[secondGrammarId];
-  if (condition?.onlyIfResultType && condition.onlyIfResultType !== firstResultType) {
+  if (condition && condition.onlyIfResultType !== firstResultType) {
     return {
       ok: false,
       reason: `Это соединение возможно только если результат первой грамматики имеет тип "${condition.onlyIfResultType}".`
     };
   }
 
-  if (!second.inputType.includes(firstResultType) && condition?.allowInputType !== firstResultType) {
+  if (!second.inputType.includes(firstResultType)) {
     return {
       ok: false,
       reason: `Вторая грамматика не присоединяется к типу "${firstResultType}".`
@@ -1709,6 +1703,51 @@ function explainBestFailedOrder(selectedGrammarIds) {
   return bestFailure.reason;
 }
 
+// The part of the chain that conjugates further, named for learners (싶다 in -고 싶다 etc.).
+const CHAIN_PREDICATE_LEMMAS = {
+  go_sipda: "싶다",
+  neuryeogo_hada: "하다",
+  ji_anta: "않다",
+  geot_gatda_adj: "같다",
+  geot_gatda_verb_present: "같다",
+  ajida_eojida: "지다"
+};
+
+// Explains why -(으)ㄴ 것 같다 and -는 것 같다 must be swapped, without grammar jargon.
+// It gives no sample form: learners go straight on to this chain, so a ready form would give the answer away.
+function describeEndingTypeMismatch({ reasonType, previousId, previousLabel, beforeId, wrongLabel, correctLabel, orderLabels }) {
+  const typeWord = reasonType === "adjective" ? "прилагательное" : "глагол";
+  // -아지다/어지다 reads better as a whole class of words than as the bare 지다.
+  const describeChange = (id, fallback) => id === "ajida_eojida"
+    ? `слова с -아지다/어지다 изменяются как ${reasonType === "adjective" ? "прилагательные" : "глаголы"}`
+    : `${CHAIN_PREDICATE_LEMMAS[id] || fallback} изменяется как ${typeWord}`;
+  const changesAs = describeChange(previousId, `слово после ${previousLabel}`);
+  const tail = `Подходящая цепочка: ${orderLabels}.`;
+  const wrongJoinsTo = reasonType === "adjective" ? "глаголам" : "прилагательным";
+
+  // -지 않다 joins both verbs and adjectives and takes the type of the word before it,
+  // so the pair itself is fine; only this position in the chain needs the other ending.
+  if (previousId === "ji_anta") {
+    const before = beforeId
+      ? `Здесь перед ним ${getGrammarById(beforeId)?.label || beforeId}, а ${describeChange(beforeId, "это слово")}.`
+      : `Здесь оно стоит после ${reasonType === "adjective" ? "прилагательного" : "глагола"}.`;
+    return `В этой цепочке ${wrongLabel} не подходит. -지 않다 изменяется так же, как слово перед ним. ${before} ${wrongLabel} присоединяется к ${wrongJoinsTo}, поэтому после -지 않다 здесь нужно ${correctLabel}. ${tail}`;
+  }
+
+  if (reasonType === "adjective") {
+    if (!previousLabel) {
+      return `${wrongLabel} не присоединяется к прилагательным. ${wrongLabel} присоединяется к глаголам, а с прилагательными используется ${correctLabel}. ${tail}`;
+    }
+    return `${previousLabel} и ${wrongLabel} не соединяются. ${wrongLabel} присоединяется к глаголам, а ${changesAs}. Поэтому после ${previousLabel} нужно ${correctLabel}. ${tail}`;
+  }
+
+  // Mirrors the adjective case so the two explanations read the same way.
+  if (!previousLabel) {
+    return `${wrongLabel} не присоединяется к глаголам. ${wrongLabel} присоединяется к прилагательным, а с глаголами используется ${correctLabel}. ${tail}`;
+  }
+  return `${previousLabel} и ${wrongLabel} не соединяются. ${wrongLabel} присоединяется к прилагательным, а ${changesAs}. Поэтому после ${previousLabel} нужно ${correctLabel}. ${tail}`;
+}
+
 function explainNearMissSelection(selectedGrammarIds) {
   const swapPairs = [
     {
@@ -1746,18 +1785,17 @@ function explainNearMissSelection(selectedGrammarIds) {
         continue;
       }
 
-      const wrongGrammar = getGrammarById(pair.from);
-      const correctGrammar = getGrammarById(pair.to);
+      const wrongLabel = getGrammarById(pair.from)?.label || pair.from;
+      const correctLabel = getGrammarById(pair.to)?.label || pair.to;
       const orderLabels = orderResult.order
         .map((grammarId) => getGrammarById(grammarId)?.label || grammarId)
-        .join(" -> ");
-
-      const typeReason =
-        pair.reasonType === "adjective"
-          ? "перед этой точкой форма уже становится прилагательной"
-          : "перед этой точкой форма уже становится глагольной";
-
-      return `Эта цепочка почти собирается. Здесь подходит ${correctGrammar?.label || pair.to}, а ${wrongGrammar?.label || pair.from} в эту точку не встраивается, потому что ${typeReason}. Подходящий порядок: ${orderLabels}.`;
+        .join(" → ");
+      const previousId = orderResult.order[orderResult.order.indexOf(pair.to) - 1];
+      const previousLabel = previousId ? getGrammarById(previousId)?.label || previousId : null;
+      const beforeId = orderResult.order[orderResult.order.indexOf(pair.to) - 2];
+      return describeEndingTypeMismatch({
+        reasonType: pair.reasonType, previousId, previousLabel, beforeId, wrongLabel, correctLabel, orderLabels
+      });
     }
   }
 

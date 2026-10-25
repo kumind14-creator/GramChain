@@ -22,8 +22,6 @@ const fixtures = [
   ["deutda", ["neuryeogo_hada", "past_tense"], "들으려고 했어요"],
   ["salda", ["neuryeogo_hada", "past_tense"], "살려고 했어요"],
   ["yeppeuda", ["ajida_eojida", "past_tense", "eul_ttae"], "예뻐졌을 때"],
-  ["yeppeuda", ["ajida_eojida", "geot_gatda_adj"], "예뻐진 것 같아요"],
-  ["chupda", ["ajida_eojida", "geot_gatda_adj", "ji_anta"], "추워진 것 같지 않아요"],
   ["meokda", ["go_sipda", "ji_anta", "geot_gatda_adj"], "먹고 싶지 않은 것 같아요"],
   ["meokda", ["neuryeogo_hada", "ji_anta", "geot_gatda_verb_present"], "먹으려고 하지 않는 것 같아요"],
   ["meokda", ["ji_anta", "neuryeogo_hada", "geot_gatda_verb_present"], "먹지 않으려고 하는 것 같아요"],
@@ -84,4 +82,7 @@ assert.equal(engine.generateExercise(["go_sipda", "geot_gatda_verb_present"], "m
 assert.equal(engine.generateExercise(["past_tense", "aseo_eoseo"], "gada").ok, false);
 assert.equal(engine.generateExercise(["ajida_eojida"], "meokda").ok, false);
 assert.equal(engine.generateExercise(["neuryeogo_hada", "ji_anta", "myeon_eumyeon"], "tada").ok, false);
+// The author teaches -아지는 것 같다 only, not -아진 것 같다.
+assert.equal(engine.generateExercise(["ajida_eojida", "geot_gatda_adj"], "yeppeuda").ok, false);
+assert.equal(engine.generateExercise(["ajida_eojida", "geot_gatda_verb_present"], "yeppeuda").ok, true);
 console.log(`Compatibility passed: ${fixtures.length} independent form fixtures; ${checked} word-and-selection cases, reverse selection, whitelist consistency and exclusions. No API requests.`);
