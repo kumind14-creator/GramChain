@@ -41,6 +41,50 @@ const state = {
 
 const MISTAKES_STORAGE_PREFIX = "gramchain_mistakes_";
 const MAX_MISTAKE_HISTORY = 200;
+let practiceTracker = null;
+
+function getPracticeContext() {
+  const { options, practiceSession, mistakeHistory, ...context } = state;
+  return context;
+}
+
+function sendPracticeCheckpoint(body, urgent) {
+  if (urgent && navigator.sendBeacon) {
+    const blob = new Blob([JSON.stringify(body)], { type: "application/json" });
+    if (navigator.sendBeacon("/api/research/event", blob)) return Promise.resolve();
+  }
+  return fetch("/api/research/event", {
+    method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body), keepalive: urgent
+  }).then((response) => { if (!response.ok) throw new Error("Practice checkpoint failed"); });
+}
+
+function initializePracticeTracking() {
+  let storage;
+  try { storage = window.localStorage; } catch (_) { /* Tracking still works without local persistence. */ }
+  practiceTracker = new PracticeSessionTracker({ storage, send: sendPracticeCheckpoint, getContext: getPracticeContext });
+  const expired = () => {
+    if (state.practiceSession) state.practiceSession.completed = true;
+    if (state.researchSessionId) renderSessionCompleted();
+  };
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "hidden") void practiceTracker.pause();
+    else if (practiceTracker.record && !practiceTracker.record.completed && !practiceTracker.resume()) expired();
+    else if (practiceTracker.record?.completed && state.practiceSession && !state.practiceSession.completed) expired();
+  });
+  window.addEventListener("pagehide", () => { void practiceTracker.pause(); });
+  window.addEventListener("pageshow", (event) => {
+    if (event.persisted && practiceTracker.record && !practiceTracker.resume()) expired();
+  });
+  window.addEventListener("online", () => {
+    if (practiceTracker.record?.completed) void practiceTracker.finish();
+    else void practiceTracker.checkpoint();
+  });
+  window.setInterval(() => {
+    const wasOpen = practiceTracker.record && !practiceTracker.record.completed;
+    if (!practiceTracker.tick() && wasOpen) expired();
+  }, 30000);
+}
 const TASK_TEXT = {
   task_1: {
     ru: "Введите код участника и начните учебную сессию.",
@@ -138,6 +182,8 @@ const uiText = {
     next: "Дальше",
     finishChain: "Завершить цепочку",
     finishSession: "Завершить сессию",
+    startNewSession: "Начать новую сессию",
+    sessionExpiredText: "Перерыв длился 15 минут, поэтому сессия завершена автоматически. Время отсутствия не включено во время занятий.",
     sessionCompletedTitle: "Сессия завершена",
     sessionCompletedText: "Спасибо. Все данные этой учебной сессии сохранены. Теперь можно закрыть эту страницу.",
     newExercise: "Новое упражнение",
@@ -225,6 +271,8 @@ const uiText = {
     next: "Next",
     finishChain: "Finish chain",
     finishSession: "Finish session",
+    startNewSession: "Start a new session",
+    sessionExpiredText: "The session ended automatically after a 15-minute break. Time away was not included in your study time.",
     sessionCompletedTitle: "Session completed",
     sessionCompletedText: "Thank you. The data for this learning session have been saved. You may now close this page.",
     newExercise: "New exercise",
@@ -280,6 +328,7 @@ function renderLanguageToggle() {
 function setView(view) {
   state.currentView = view;
   document.body.dataset.view = view;
+  queueMicrotask(() => practiceTracker?.persist());
 }
 
 function updateDocumentLanguage() {
@@ -614,7 +663,7 @@ function getExerciseLogPayload(exercise) {
   };
 }
 
-function startPracticeSession() {
+function startPracticeSession(session) {
   const startedAtMs = Date.now();
   const startedAtIso = new Date(startedAtMs).toISOString();
 
@@ -624,7 +673,9 @@ function startPracticeSession() {
     completed: false
   };
 
-  void logResearchEvent("practice_session_started", { startedAt: startedAtIso });
+  void practiceTracker.start(session || {
+    sessionId: state.researchSessionId, participantCode: state.participantCode, startedAt: startedAtIso
+  }, document.visibilityState !== "hidden");
 }
 
 async function finishPracticeSession() {
@@ -633,15 +684,8 @@ async function finishPracticeSession() {
     return;
   }
 
-  const completedAtMs = Date.now();
-  const completedAt = new Date(completedAtMs).toISOString();
   practiceSession.completed = true;
-
-  await logResearchEvent("practice_session_completed", {
-    startedAt: practiceSession.startedAt,
-    completedAt,
-    practiceDurationMs: Math.max(0, completedAtMs - practiceSession.startedAtMs)
-  });
+  await practiceTracker.finish("manual");
 }
 
 async function api(path, method = "GET", body) {
@@ -998,6 +1042,7 @@ function renderParticipantStart() {
           type="text"
           maxlength="64"
           placeholder="${t("codePlaceholder")}"
+          value="${escapeHtml(state.participantCode)}"
           autocomplete="off"
         />
         <div class="button-row">
@@ -1042,7 +1087,11 @@ function renderHome() {
 
       <div class="button-row">
         <button class="ghost-btn" data-action="back-start">${t("backToStartPage")}</button>
+        <button class="secondary-btn" data-action="finish-practice-session">${t("finishSession")}</button>
       </div>
+      <p class="subtle-inline-note">${state.currentLanguage === "ru"
+        ? "Прогресс и время сохраняются автоматически. Можно просто закрыть вкладку."
+        : "Progress and study time are saved automatically. You can simply close the tab."}</p>
     </section>
   `;
 }
@@ -1319,13 +1368,27 @@ async function startParticipantSession() {
     return;
   }
 
+  if (practiceTracker.record?.participantCode === participantCode && practiceTracker.resume()) {
+    state.participantCode = participantCode;
+    state.researchSessionId = practiceTracker.record.sessionId;
+    renderHome();
+    return;
+  }
+  if (practiceTracker.record && !practiceTracker.record.completed) await practiceTracker.finish("participant_changed");
   const payload = await api("/api/research/session/start", "POST", {
     participantCode
   });
 
+  const codeEntryStartedAt = !state.completedTasks.task_1 ? state.taskTimes.task_1 : null;
   state.participantCode = payload.participantCode;
   state.researchSessionId = payload.sessionId;
-  startPracticeSession();
+  state.taskTimes = {};
+  if (codeEntryStartedAt) state.taskTimes.task_1 = codeEntryStartedAt;
+  state.completedTasks = {};
+  state.taskDifficultyRatings = {};
+  state.pendingTaskEvaluation = null;
+  resetSessionUiState();
+  startPracticeSession(payload);
   loadMistakeHistory(payload.participantCode);
   completeTask("task_1", getTaskText("task_1"), {
     participantCode: payload.participantCode
@@ -1489,8 +1552,7 @@ function renderCompletionSummary() {
   const selectedGrammarIds = exercise?.selectedGrammarIds || state.selectedGrammarIds || [];
   const summary = getSessionSummary();
   const orderText = selectedGrammarIds.map(getGrammarLabel).join(" -> ");
-  const canFinishSession = ["task_1", "task_2", "task_3", "task_4", "task_5"]
-    .every((taskId) => state.completedTasks[taskId]);
+  const canFinishSession = Boolean(state.researchSessionId && !state.practiceSession?.completed);
 
   appRoot.innerHTML = `
     <section class="screen">
@@ -1525,8 +1587,9 @@ function renderSessionCompleted() {
         ${getParticipantBadgeHtml()}
         ${renderLanguageToggle()}
         <h2>${t("sessionCompletedTitle")}</h2>
-        <p>${t("sessionCompletedText")}</p>
+        <p>${t(practiceTracker?.record?.completionReason === "timeout" ? "sessionExpiredText" : "sessionCompletedText")}</p>
       </div>
+      <div class="button-row"><button class="primary-btn" data-action="new-practice-session">${t("startNewSession")}</button></div>
     </section>
   `;
 }
@@ -1934,6 +1997,7 @@ renderExercise = function renderExerciseWithAnswerGuard() {
   syncCheckButton();
   answerBox.addEventListener("input", () => {
     state.draftAnswer = answerBox.value;
+    practiceTracker?.persist();
     syncCheckButton();
   });
 };
@@ -2086,6 +2150,16 @@ function bindGlobalActions() {
       if (action === "finish-practice-session") {
         await finishPracticeSession();
         renderSessionCompleted();
+        return;
+      }
+
+      if (action === "new-practice-session") {
+        state.researchSessionId = null;
+        state.taskTimes = {};
+        state.completedTasks = {};
+        state.taskDifficultyRatings = {};
+        state.pendingTaskEvaluation = null;
+        renderParticipantStart();
         return;
       }
 
@@ -2257,6 +2331,7 @@ function bindGlobalActions() {
 }
 
 async function bootstrap() {
+  initializePracticeTracking();
   bindGlobalActions();
   const payload = await api("/api/options");
   state.options = payload.options;
@@ -2268,6 +2343,22 @@ async function bootstrap() {
     state.currentLanguage = savedLanguage;
   }
   updateDocumentLanguage();
+  const savedPractice = practiceTracker.restore(document.visibilityState !== "hidden");
+  if (savedPractice) {
+    const saved = savedPractice.context || {};
+    for (const key of Object.keys(state)) {
+      if (key !== "options" && key !== "practiceSession" && key !== "mistakeHistory" && Object.hasOwn(saved, key)) state[key] = saved[key];
+    }
+    state.participantCode = savedPractice.participantCode;
+    state.researchSessionId = savedPractice.sessionId;
+    state.practiceSession = { startedAt: savedPractice.startedAt, completed: false };
+    loadMistakeHistory(state.participantCode);
+    if (["participant_start", "session_completed"].includes(state.currentView)) state.currentView = "home";
+    if (state.currentView === "exercise" && state.exerciseSituationStatus === "loading") state.exerciseContextKey = null;
+    refreshCurrentView();
+    void practiceTracker.checkpoint();
+    return;
+  }
   renderParticipantStart();
 }
 
