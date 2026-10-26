@@ -1,7 +1,8 @@
 const speakingState = {
   language: "ru",
   participantCode: "",
-  stage: "pre",
+  stage: null,
+  setupStep: "start",
   sessionId: null,
   startedAt: null,
   tasksByStage: { pre: [], post: [] },
@@ -30,7 +31,18 @@ const speakingText = {
   ru: {
     loading: "Загрузка...",
     title: "Подготовка к записи",
-    intro: "Введите код участника, выберите этап и разрешите доступ к микрофону. Когда откроется задание, запись начнется автоматически.",
+    intro: "Выполните три шага по порядку. На этом экране запись ещё не начинается.",
+    codeStep: "Введите код участника",
+    codeHelp: "Используйте код, который вам выдал исследователь. Для обоих тестов нужен один и тот же код.",
+    stageStep: "Выберите тест",
+    stageHelp: "Входной — перед началом обучения. Итоговый — после завершения обучения.",
+    nextStep: "Перейдите к микрофону",
+    nextHelp: "На следующем экране разрешите доступ к микрофону. Затем вы увидите инструкцию и пробное задание.",
+    setupNeeded: "Сначала введите код участника и выберите тест.",
+    setupSelected: "Выбран тест:",
+    toMicrophone: "Перейти к проверке микрофона",
+    editSetup: "Изменить код или тест",
+    missingStage: "Выберите входной или итоговый тест.",
     participantCode: "Код участника",
     participantPlaceholder: "Например: 101",
     stage: "Этап",
@@ -82,7 +94,18 @@ const speakingText = {
   en: {
     loading: "Loading...",
     title: "Recording setup",
-    intro: "Enter the participant code, choose the stage, and allow microphone access. Recording starts automatically when a task opens.",
+    intro: "Follow the three steps in order. Recording does not start on this screen.",
+    codeStep: "Enter your participant code",
+    codeHelp: "Use the code provided by the researcher. Use the same code for both tests.",
+    stageStep: "Choose your test",
+    stageHelp: "Take the pre-test before training and the post-test after completing training.",
+    nextStep: "Continue to the microphone check",
+    nextHelp: "Allow microphone access on the next screen. Then read the instructions and try a practice task.",
+    setupNeeded: "First enter your participant code and choose a test.",
+    setupSelected: "Selected test:",
+    toMicrophone: "Go to microphone check",
+    editSetup: "Change code or test",
+    missingStage: "Choose the pre-test or post-test.",
     participantCode: "Participant code",
     participantPlaceholder: "For example: 101",
     stage: "Stage",
@@ -220,8 +243,10 @@ function renderLanguageButtons() {
 }
 
 function renderStartScreen() {
+  speakingState.setupStep = "start";
+  const hasCode = Boolean(speakingState.participantCode.trim());
   speakingRoot.innerHTML = `
-    <section class="speaking-screen">
+    <section class="speaking-screen speaking-setup-screen">
       ${renderLanguageButtons()}
       <div class="speaking-section">
         <h2>${st("title")}</h2>
@@ -229,35 +254,41 @@ function renderStartScreen() {
       </div>
 
       <div class="speaking-form">
-        <div class="speaking-field">
-          <label for="participantCode">${st("participantCode")}</label>
-          <input id="participantCode" type="text" value="${escapeHtml(speakingState.participantCode)}" placeholder="${escapeHtml(st("participantPlaceholder"))}" maxlength="64" />
+        <div class="speaking-field speaking-setup-step">
+          <label class="speaking-step-title" for="participantCode"><span class="speaking-step-number" aria-hidden="true">1</span>${st("codeStep")}</label>
+          <p id="codeHelp" class="speaking-step-help">${st("codeHelp")}</p>
+          <input id="participantCode" type="text" aria-describedby="codeHelp" value="${escapeHtml(speakingState.participantCode)}" placeholder="${escapeHtml(st("participantPlaceholder"))}" maxlength="64" autocomplete="off" />
         </div>
 
-        <div class="speaking-field">
-          <div class="speaking-group-label">${st("stage")}</div>
-          <div class="speaking-stage-grid">
-            <button class="speaking-stage-option ${speakingState.stage === "pre" ? "active" : ""}" data-action="stage-pre">
+        <fieldset class="speaking-field speaking-setup-step" id="testStage" ${hasCode ? "" : "disabled"}>
+          <legend class="speaking-step-title"><span class="speaking-step-number" aria-hidden="true">2</span>${st("stageStep")}</legend>
+          <p class="speaking-step-help">${st("stageHelp")}</p>
+          <div class="speaking-stage-grid" role="group" aria-label="${st("stageStep")}">
+            <button type="button" aria-pressed="${speakingState.stage === "pre"}" class="speaking-stage-option ${speakingState.stage === "pre" ? "active" : ""}" data-action="stage-pre">
               <strong>${st("pre")}</strong>
               <span>${st("preDescription")}</span>
             </button>
-            <button class="speaking-stage-option ${speakingState.stage === "post" ? "active" : ""}" data-action="stage-post">
+            <button type="button" aria-pressed="${speakingState.stage === "post"}" class="speaking-stage-option ${speakingState.stage === "post" ? "active" : ""}" data-action="stage-post">
               <strong>${st("post")}</strong>
               <span>${st("postDescription")}</span>
             </button>
           </div>
-        </div>
+        </fieldset>
 
-        <div class="speaking-actions">
-          <a class="speaking-secondary-button speaking-link-button" href="/">${st("mainApp")}</a>
-          <button class="speaking-button" data-action="start-setup">${st("continue")}</button>
+        <div class="speaking-setup-step speaking-setup-next">
+          <h3 class="speaking-step-title"><span class="speaking-step-number" aria-hidden="true">3</span>${st("nextStep")}</h3>
+          <p class="speaking-step-help">${st("nextHelp")}</p>
+          <p id="setupStatus" class="speaking-setup-status" role="status">${hasCode && speakingState.stage ? `${st("setupSelected")} ${st(speakingState.stage)}` : st("setupNeeded")}</p>
+          <button class="speaking-button" data-action="start-setup" ${hasCode && speakingState.stage ? "" : "disabled"}>${st("toMicrophone")}</button>
         </div>
+        <a class="speaking-link-button speaking-setup-home" href="/">${st("mainApp")}</a>
       </div>
     </section>
   `;
 }
 
 function renderMicrophoneScreen() {
+  speakingState.setupStep = "microphone";
   speakingRoot.innerHTML = `
     <section class="speaking-screen">
       ${renderLanguageButtons()}
@@ -271,6 +302,7 @@ function renderMicrophoneScreen() {
       </div>
 
       <div class="speaking-actions">
+        <button class="speaking-ghost-button" data-action="edit-setup">${st("editSetup")}</button>
         <button class="speaking-secondary-button" data-action="enable-microphone">${st("enableMicrophone")}</button>
         <button class="speaking-button" data-action="begin-speaking-session" ${speakingState.mediaStream ? "" : "disabled"}>${st("beginSession")}</button>
       </div>
@@ -379,7 +411,7 @@ function renderSummaryScreen() {
 
 function renderSpeakingScreen() {
   if (!speakingState.sessionId) {
-    if (speakingState.mediaStream) {
+    if (speakingState.setupStep === "microphone") {
       renderMicrophoneScreen();
       return;
     }
@@ -690,6 +722,8 @@ async function startPracticeRecording() {
 }
 
 function resetSpeakingFlow() {
+  speakingState.stage = null;
+  speakingState.setupStep = "start";
   stopTimer();
   stopAudioMeter();
 
@@ -712,6 +746,15 @@ function resetSpeakingFlow() {
 }
 
 function bindSpeakingActions() {
+  speakingRoot.addEventListener("input", (event) => {
+    if (event.target.id !== "participantCode") return;
+    speakingState.participantCode = event.target.value.trim();
+    const hasCode = Boolean(speakingState.participantCode);
+    document.getElementById("testStage").disabled = !hasCode;
+    speakingRoot.querySelector('[data-action="start-setup"]').disabled = !(hasCode && speakingState.stage);
+    document.getElementById("setupStatus").textContent = hasCode && speakingState.stage
+      ? `${st("setupSelected")} ${st(speakingState.stage)}` : st("setupNeeded");
+  });
   document.addEventListener("click", async (event) => {
     const button = event.target.closest("[data-action]");
     if (!button) {
@@ -738,12 +781,14 @@ function bindSpeakingActions() {
       }
 
       if (action === "stage-pre") {
+        if (!speakingState.participantCode) return;
         speakingState.stage = "pre";
         renderStartScreen();
         return;
       }
 
       if (action === "stage-post") {
+        if (!speakingState.participantCode) return;
         speakingState.stage = "post";
         renderStartScreen();
         return;
@@ -756,7 +801,16 @@ function bindSpeakingActions() {
           alert(st("missingCode"));
           return;
         }
+        if (!["pre", "post"].includes(speakingState.stage)) {
+          alert(st("missingStage"));
+          return;
+        }
         renderMicrophoneScreen();
+        return;
+      }
+
+      if (action === "edit-setup") {
+        renderStartScreen();
         return;
       }
 

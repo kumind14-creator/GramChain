@@ -1,4 +1,4 @@
-const CACHE_NAME = "gramchain-shell-v1";
+const CACHE_NAME = "gramchain-shell-v2";
 const APP_SHELL = [
   "/",
   "/index.html",
@@ -7,6 +7,7 @@ const APP_SHELL = [
   "/styles.css",
   "/speaking-test.css",
   "/app.js",
+  "/practice-session.js",
   "/speaking-test.js",
   "/pwa.js",
   "/manifest.webmanifest",
