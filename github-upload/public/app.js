@@ -397,7 +397,7 @@ function escapeHtml(value) {
     .replace(/"/g, "&quot;");
 }
 
-function renderHighlightedTranslation(text, target) {
+function renderHighlightedTranslation(text, target, grammarIds = []) {
   const translation = String(text || "");
   const fragment = String(target || "").trim();
   const index = fragment ? translation.indexOf(fragment) : -1;
@@ -406,7 +406,43 @@ function renderHighlightedTranslation(text, target) {
     return escapeHtml(translation);
   }
 
-  return `${escapeHtml(translation.slice(0, index))}<span class="translation-target">${escapeHtml(fragment)}</span>${escapeHtml(translation.slice(index + fragment.length))}`;
+  const ranges = [{ start: index, end: index + fragment.length }];
+  const connectorPatterns = [];
+  if (grammarIds.includes("jiman")) {
+    connectorPatterns.push(/(^|[\s,.;:!?—–])(но|однако|зато|хотя|а|but|although|though|however)(?=$|[\s,.;:!?—–])/giu);
+  }
+  if (grammarIds.includes("aseo_eoseo")) {
+    connectorPatterns.push(/(^|[\s,.;:!?—–])(потому что|поэтому|так что|так как|поскольку|из-за того, что|из-за|вследствие|because of|because|therefore|as a result|so(?=\s+(?:I|you|he|she|it|we|they|the|a|an|my|your|our|his|her|their|this|there|please|let)\b))(?=$|[\s,.;:!?—–])/giu);
+  }
+  // A target can cover only the predicate; also mark the word that expresses
+  // the selected grammatical connection, without highlighting intervening text.
+  for (const markers of connectorPatterns) {
+    const candidates = [...translation.matchAll(markers)].map((match) => ({
+      start: match.index + match[1].length,
+      end: match.index + match[1].length + match[2].length
+    }));
+    const alreadyIncluded = candidates.some((candidate) => ranges.some((range) => candidate.start >= range.start && candidate.end <= range.end));
+    if (!alreadyIncluded) {
+      const nearby = candidates.map((range) => ({ ...range, distance: Math.max(0, index - range.end, range.start - index - fragment.length) }))
+        .sort((a, b) => a.distance - b.distance)[0];
+      if (nearby && nearby.distance <= 160) ranges.push(nearby);
+    }
+  }
+  ranges.sort((a, b) => a.start - b.start);
+  const merged = [];
+  for (const range of ranges) {
+    const previous = merged[merged.length - 1];
+    if (previous && range.start <= previous.end) previous.end = Math.max(previous.end, range.end);
+    else merged.push({ ...range });
+  }
+  let rendered = "";
+  let cursor = 0;
+  for (const range of merged) {
+    rendered += escapeHtml(translation.slice(cursor, range.start));
+    rendered += `<span class="translation-target">${escapeHtml(translation.slice(range.start, range.end))}</span>`;
+    cursor = range.end;
+  }
+  return rendered + escapeHtml(translation.slice(cursor));
 }
 
 function getMistakesStorageKey(participantCode) {
@@ -1749,7 +1785,7 @@ function renderExerciseEnhanced() {
             </ul>
           </section>
         </div>
-        ${situation ? `<div class="hint-card exercise-situation"><strong>${t("situation")}</strong><div>${renderHighlightedTranslation(situation, situationTarget)}</div></div>` : ""}
+        ${situation ? `<div class="hint-card exercise-situation"><strong>${t("situation")}</strong><div>${renderHighlightedTranslation(situation, situationTarget, exercise.selectedGrammarIds)}</div></div>` : ""}
         ${situationStatus === "loading" ? `<div class="hint-card exercise-situation"><strong>${t("situation")}</strong><div>${t("situationLoading")}</div></div>` : ""}
         ${situationStatus === "unavailable" ? `<div class="hint-card exercise-situation"><strong>${t("situation")}</strong><div>${t("situationUnavailable")}</div><button class="ghost-btn inline-action" data-action="retry-situation">${t("retrySituation")}</button></div>` : ""}
         ${politeInstruction ? `<div class="helper"><strong>${escapeHtml(politeInstruction)}</strong></div>` : ""}
@@ -1805,7 +1841,7 @@ function renderResultEnhanced() {
               <div class="example-card">
                 <strong>${t("example")}</strong>
                 <div>${escapeHtml(example.sentence)}</div>
-                ${getExampleTranslation(example) ? `<div class="result-meta">${renderHighlightedTranslation(getExampleTranslation(example), getExampleTranslationTarget(example))}</div>` : ""}
+                ${getExampleTranslation(example) ? `<div class="result-meta">${renderHighlightedTranslation(getExampleTranslation(example), getExampleTranslationTarget(example), exercise.selectedGrammarIds)}</div>` : ""}
               </div>
             ` : ""}
         ${revealAnswer && exercise?.usageNote ? `<div class="hint-card"><div>${escapeHtml(state.currentLanguage === "en" ? exercise.usageNote.en : exercise.usageNote.ru)}</div></div>` : ""}
