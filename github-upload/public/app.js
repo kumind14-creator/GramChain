@@ -80,6 +80,15 @@ function initializePracticeTracking() {
     if (practiceTracker.record?.completed) void practiceTracker.finish();
     else void practiceTracker.checkpoint();
   });
+  let lastActivityHandledAt = 0;
+  for (const eventName of ["pointerdown", "keydown", "input", "scroll"]) {
+    document.addEventListener(eventName, () => {
+      if (document.visibilityState === "hidden" || !practiceTracker.record || practiceTracker.record.completed) return;
+      if (Date.now() - lastActivityHandledAt < 1000) return;
+      lastActivityHandledAt = Date.now();
+      if (!practiceTracker.activity()) expired();
+    }, { passive: true, capture: true });
+  }
   window.setInterval(() => {
     const wasOpen = practiceTracker.record && !practiceTracker.record.completed;
     if (!practiceTracker.tick() && wasOpen) expired();
@@ -1126,8 +1135,8 @@ function renderHome() {
         <button class="secondary-btn" data-action="finish-practice-session">${t("finishSession")}</button>
       </div>
       <p class="subtle-inline-note">${state.currentLanguage === "ru"
-        ? "Прогресс и время сохраняются автоматически. Можно просто закрыть вкладку."
-        : "Progress and study time are saved automatically. You can simply close the tab."}</p>
+        ? "Занимайтесь не менее 10 минут в день. После занятия нажмите «Завершить сессию». Время сохраняется автоматически; скрытая вкладка и долгие перерывы не учитываются."
+        : "Practise for at least 10 minutes a day. Click ‘Finish session’ when you are done. Time is saved automatically; hidden tabs and long breaks are not counted."}</p>
     </section>
   `;
 }
@@ -2176,6 +2185,7 @@ function bindGlobalActions() {
     if (!action) {
       return;
     }
+    if (state.practiceSession?.completed && !["new-practice-session", "start-participant-session", "toggle-language", "back-start"].includes(action)) return;
 
     try {
       if (action === "start-participant-session") {
