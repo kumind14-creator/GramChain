@@ -100,7 +100,7 @@ const TASK_TEXT = {
     en: "Enter the access code and start the assigned learning session."
   },
   task_2: {
-    ru: "Начните «Свою тренировку», выбрав не меньше двух грамматик.",
+    ru: "Начните «Свою тренировку», выбрав не менее двух грамматик.",
     en: "Start a Custom practice set by selecting at least two grammar patterns."
   },
   task_3: {
